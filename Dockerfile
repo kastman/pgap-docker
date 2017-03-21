@@ -16,6 +16,7 @@ RUN apt-get update && \
 RUN apt-get install -y \
       mafft=7.123-1 \
       mcl=1:12-135-2 \
+      openjdk-7-jre-headless \
       phylip=1:3.695-1 && \
     apt-get clean
 
