@@ -26,16 +26,16 @@ RUN wget https://downloads.sourceforge.net/project/pgap/PGAP-${pgap_version}/PGA
   md5sum -c PGAP-${pgap_version}.md5 && \
   tar xzf PGAP-${pgap_version}.tar.gz && \
   mv /PGAP-${pgap_version} /pgap && \
-  chmod a+x /pgap/*.pl
+  chmod a+x /pgap/*.pl && \
+  rm PGAP-${pgap_version}.tar.gz
 
 COPY updatePaths.patch /updatePaths.patch
 RUN patch /pgap/PGAP.pl < /updatePaths.patch
+RUN rm /updatePaths.patch
 
 RUN (echo y;echo o conf prerequisites_policy follow;echo o conf commit)|cpan && \
     cpan Statistics::LineFit && \
     cpan Statistics::Distributions;
-
-RUN rm /PGAP-${pgap_version}.tar.gz /updatePaths.patch
 
 WORKDIR /pgap
 ENTRYPOINT ["/pgap/PGAP.pl"]
