@@ -1,0 +1,24 @@
+7,8c7,8
+< my $formatdb="/share/ibm-1/bin/formatdb";
+< my $blastall="/share/ibm-1/bin/blastall";
+---
+> my $formatdb="/usr/bin/formatdb";
+> my $blastall="/usr/bin/blastall";
+11c11
+< my $mcl="/home/zhaoyb/work/PGAP/PGAP/Programs/ExtraBin/mcl";
+---
+> my $mcl="/usr/bin/mcl";
+17,22c17,22
+< my $seqboot="/home/zhaoyb/work/PGAP/PGAP/Programs/ExtraBin/seqboot";
+< my $neighbor="/home/zhaoyb/work/PGAP/PGAP/Programs/ExtraBin/neighbor";
+< my $consense="/home/zhaoyb/work/PGAP/PGAP/Programs/ExtraBin/consense";
+< my $dnaml="/home/zhaoyb/work/PGAP/PGAP/Programs/ExtraBin/dnaml";
+< my $dnadist="/home/zhaoyb/work/PGAP/PGAP/Programs/ExtraBin/dnadist";
+< my $dnapars="/home/zhaoyb/work/PGAP/PGAP/Programs/ExtraBin/dnapars";
+---
+> my $seqboot="/usr/lib/phylip/bin/seqboot";
+> my $neighbor="/usr/lib/phylip/bin/neighbor";
+> my $consense="/usr/lib/phylip/bin/consense";
+> my $dnaml="/usr/lib/phylip/bin/dnaml";
+> my $dnadist="/usr/lib/phylip/bin/dnadist";
+> my $dnapars="/usr/lib/phylip/bin/dnapars";
