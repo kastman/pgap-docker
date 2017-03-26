@@ -20,7 +20,7 @@ RUN apt-get install -y \
       phylip=1:3.695-1 && \
     apt-get clean
 
-ARG pgap_version=1.2.1
+ARG pgap_version=1.12
 
 COPY PGAP-${pgap_version}.md5 /PGAP-${pgap_version}.md5
 RUN wget https://downloads.sourceforge.net/project/pgap/PGAP-${pgap_version}/PGAP-${pgap_version}.tar.gz && \
