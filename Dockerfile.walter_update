@@ -1,0 +1,60 @@
+# Lembrem de criar a imagem no mesmo diretorio em que estiver os arquivos PGAP-1.12.md5 e updatePaths.patch
+# Remember to run the image creation in the same directory as the PGAP-1.12.md5 and updatePaths.patch files
+# Base image from Ubuntu 22.04
+# Imagem base do Ubuntu 22.04
+FROM ubuntu:22.04
+
+# Disable interactive prompts during package installation
+# Desabilitar prompts interativos durante a instalação de pacotes
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update package list and install system utilities
+# Atualizar lista de pacotes e instalar utilitários do sistema
+RUN apt-get update && \
+    apt-get install -y openjdk-8-jre-headless file gcc make unzip wget patch && \
+    apt-get clean
+
+# Install bioinformatics utilities
+# Instalar utilitários de bioinformática
+RUN apt-get install -y bioperl mcl phylip mafft && \
+    apt-get clean
+
+# Set the working directory to root
+# Definir o diretório de trabalho para a raiz
+WORKDIR /
+
+# Copy the PGAP checksum file into the container
+# Copiar o arquivo de checksum do PGAP para o contêiner
+COPY PGAP-1.12.md5 /PGAP-1.12.md5
+
+# Download, verify, and extract PGAP
+# Baixar, verificar e extrair o PGAP
+RUN wget https://downloads.sourceforge.net/project/pgap/PGAP-1.12/PGAP-1.12.tar.gz && \
+    md5sum -c PGAP-1.12.md5 && \
+    tar xzf PGAP-1.12.tar.gz && \
+    mv /PGAP-1.12 /pgap
+
+# Copy the patch file into the container
+# Copiar o arquivo de patch para o contêiner
+COPY updatePaths.patch /updatePaths.patch
+
+# Apply the patch to PGAP
+# Aplicar o patch no PGAP
+RUN patch /pgap/PGAP.pl < /updatePaths.patch
+
+# Remove downloaded files to clean up
+# Remover arquivos baixados para limpeza
+RUN rm /PGAP-1.12.tar.gz /updatePaths.patch
+
+# Install Perl modules needed by PGAP
+# Instalar módulos Perl necessários para o PGAP
+RUN (echo y; echo o conf prerequisites_policy follow; echo o conf commit) | cpan && \
+    cpan Bio::Phylo && \
+    cpan Inline::C && \
+    cpan Bio::AlignIO && \
+    cpan Statistics::LineFit && \
+    cpan Statistics::Distributions
+
+# Keep the container running by tailing /dev/null
+# Manter o contêiner em execução exibindo /dev/null
+CMD ["tail", "-f", "/dev/null"]
